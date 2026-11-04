@@ -1,0 +1,643 @@
+/* ==========================================================================
+   motion.css: semua animasi app ada di sini.
+
+   Seluruh isi berada di dalam prefers-reduced-motion: no-preference, jadi kalau
+   perangkat meminta Kurangi Gerakan, semua animasi otomatis mati sekaligus.
+
+   Kelas pada wadah halaman:
+   .is-enter    halaman baru dibuka: isi muncul berurutan
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* --- Masuk halaman --- */
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+
+  @keyframes pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    60% {
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .is-enter .view > * {
+    animation: rise 480ms var(--ease) backwards;
+  }
+
+  .is-enter .view > :nth-child(2) {
+    animation-delay: 60ms;
+  }
+
+  .is-enter .view > :nth-child(3) {
+    animation-delay: 120ms;
+  }
+
+  .is-enter .view > :nth-child(4) {
+    animation-delay: 180ms;
+  }
+
+  .is-enter .view > :nth-child(5) {
+    animation-delay: 240ms;
+  }
+
+  .is-enter .view > :nth-child(n + 6) {
+    animation-delay: 300ms;
+  }
+
+  .is-enter .finding,
+  .is-enter .fund-card,
+  .is-enter .budget-card {
+    animation: rise 460ms var(--ease) backwards;
+    animation-delay: calc(160ms + var(--i, 0) * 50ms);
+  }
+
+  .is-enter .list .row,
+  .is-enter .list .row-shell,
+  .is-enter .ledger tbody tr {
+    animation: rise 380ms var(--ease) backwards;
+  }
+
+  .is-enter .list > :nth-child(1),
+  .is-enter .ledger tbody tr:nth-child(1) {
+    animation-delay: 100ms;
+  }
+
+  .is-enter .list > :nth-child(2),
+  .is-enter .ledger tbody tr:nth-child(2) {
+    animation-delay: 135ms;
+  }
+
+  .is-enter .list > :nth-child(3),
+  .is-enter .ledger tbody tr:nth-child(3) {
+    animation-delay: 170ms;
+  }
+
+  .is-enter .list > :nth-child(4),
+  .is-enter .ledger tbody tr:nth-child(4) {
+    animation-delay: 205ms;
+  }
+
+  .is-enter .list > :nth-child(5),
+  .is-enter .ledger tbody tr:nth-child(5) {
+    animation-delay: 240ms;
+  }
+
+  .is-enter .list > :nth-child(n + 6),
+  .is-enter .ledger tbody tr:nth-child(n + 6) {
+    animation-delay: 270ms;
+  }
+
+  /* --- Saldo dan grafik --- */
+  @keyframes reveal {
+    from {
+      clip-path: inset(-6px 100% -6px -6px);
+    }
+    to {
+      clip-path: inset(-6px -6px -6px -6px);
+    }
+  }
+
+  .balance__chart canvas {
+    animation: reveal 900ms var(--ease) backwards;
+  }
+
+  .donut__center {
+    animation: fade 500ms ease 200ms backwards;
+  }
+
+  .legend__item {
+    animation: fade 400ms ease backwards;
+  }
+
+  .swatch {
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  /* --- Batang dan grafik mini --- */
+  @keyframes grow {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  .part__fill,
+  .budget__fill {
+    transform-origin: left;
+    animation: grow 800ms var(--ease) backwards;
+  }
+
+  .part:nth-child(2) .part__fill {
+    animation-delay: 70ms;
+  }
+
+  .part:nth-child(3) .part__fill {
+    animation-delay: 140ms;
+  }
+
+  .part:nth-child(4) .part__fill {
+    animation-delay: 210ms;
+  }
+
+  .part:nth-child(5) .part__fill {
+    animation-delay: 280ms;
+  }
+
+  .spark {
+    animation: reveal 800ms var(--ease) backwards;
+    animation-delay: calc(240ms + var(--i, 0) * 50ms);
+  }
+
+  .spark__end {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop 320ms var(--ease) backwards;
+    animation-delay: calc(960ms + var(--i, 0) * 50ms);
+  }
+
+  .pill {
+    animation: pop 380ms var(--ease) backwards;
+    animation-delay: calc(300ms + var(--i, 0) * 70ms);
+  }
+
+  .ring__center {
+    animation: fade 500ms ease 150ms backwards;
+  }
+
+  /* --- Kalender --- */
+  @keyframes cell-in {
+    from {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+  }
+
+  @keyframes slide-next {
+    from {
+      opacity: 0;
+      transform: translateX(26px);
+    }
+  }
+
+  @keyframes slide-prev {
+    from {
+      opacity: 0;
+      transform: translateX(-26px);
+    }
+  }
+
+  .heat__day {
+    animation: cell-in 300ms var(--ease) backwards;
+    animation-delay: calc(var(--i, 0) * 9ms);
+    transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) ease;
+  }
+
+  .is-slide-next {
+    animation: slide-next 280ms var(--ease);
+  }
+
+  .is-slide-prev {
+    animation: slide-prev 280ms var(--ease);
+  }
+
+  .is-slide-next .heat__day,
+  .is-slide-prev .heat__day {
+    animation: none;
+  }
+
+  .range-day {
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease, transform var(--dur-fast) var(--ease);
+  }
+
+  .range-day:not(:disabled):active {
+    transform: scale(0.88);
+  }
+
+  .range-day.is-start,
+  .range-day.is-end {
+    animation: pop 240ms var(--ease);
+  }
+
+  .range-summary__item {
+    transition: border-color var(--dur-fast) ease, background var(--dur-fast) ease;
+  }
+
+  .range-summary__value {
+    animation: fade 240ms ease;
+  }
+
+  /* --- Filter --- */
+  .period {
+    transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease, background var(--dur-fast) ease, transform var(--dur-fast) var(--ease);
+  }
+
+  .period:active {
+    transform: scale(0.95);
+  }
+
+  .period__badge {
+    animation: pop 300ms var(--ease) backwards;
+  }
+
+  .field__control {
+    transition: border-color var(--dur-fast) ease, background var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+
+  .field__control:focus-visible {
+    box-shadow: 0 0 0 3px var(--info-tint);
+  }
+
+  .field__button .icon {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  /* --- Navigasi --- */
+  .nav-pill {
+    transition: transform var(--dur) var(--ease), width var(--dur) var(--ease), opacity var(--dur-fast) ease;
+  }
+
+  .navtabs__item {
+    transition: color var(--dur-fast) ease, transform var(--dur-fast) var(--ease);
+  }
+
+  .navtabs__item:active {
+    transform: scale(0.95);
+  }
+
+  .tabbar__item {
+    transition: color var(--dur-fast) ease, transform var(--dur-fast) var(--ease);
+  }
+
+  .tabbar__item:active {
+    transform: scale(0.9);
+  }
+
+  .tabbar__item .icon {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .tabbar__item[aria-current="page"] .icon {
+    transform: translateY(-1px) scale(1.08);
+  }
+
+  @keyframes bar-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 24px);
+    }
+  }
+
+  .tabbar {
+    animation: bar-in 520ms var(--ease) backwards;
+  }
+
+  .topbar {
+    animation: fade 420ms ease backwards;
+  }
+
+  .brand__logo {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .backlink .icon {
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .fab {
+    animation: pop 440ms var(--ease) 220ms backwards;
+  }
+
+  .fab .icon {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .fab:active .icon {
+    transform: rotate(90deg);
+  }
+
+  /* --- Tombol --- */
+  .btn,
+  .btn-plain,
+  .btn-round,
+  .btn-circle,
+  .chip,
+  .choice,
+  .icon-option,
+  .color-dot,
+  .rank__item,
+  .row-button {
+    transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) ease, border-color var(--dur-fast) ease, color var(--dur-fast) ease, opacity var(--dur-fast) ease, filter var(--dur-fast) ease;
+  }
+
+  .btn:active,
+  .chip:active,
+  .btn-circle:active,
+  .btn-round:active {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+
+  .choice:active,
+  .icon-option:active,
+  .color-dot:active {
+    transform: scale(0.9);
+  }
+
+  .btn-circle .icon {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .is-theme-spin .icon {
+    animation: theme-spin 480ms var(--ease);
+  }
+
+  @keyframes theme-spin {
+    from {
+      opacity: 0;
+      transform: rotate(-120deg) scale(0.6);
+    }
+  }
+
+  .chip[aria-pressed="true"],
+  .choice[aria-pressed="true"],
+  .icon-option[aria-pressed="true"],
+  .color-dot[aria-pressed="true"] {
+    animation: pop 260ms var(--ease);
+  }
+
+  /* --- Baris dan transaksi --- */
+  @keyframes row-flash {
+    0% {
+      background: var(--info-tint);
+      box-shadow: inset 3px 0 0 var(--accent);
+    }
+  }
+
+  .row-shell {
+    transition: height 240ms var(--ease), opacity 200ms ease;
+  }
+
+  .row-shell.is-removing {
+    height: 0 !important;
+    opacity: 0;
+  }
+
+  .ledger tbody tr {
+    transition: background var(--dur-fast) ease, opacity 200ms ease, transform 200ms var(--ease);
+  }
+
+  .ledger tbody tr.is-removing {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+
+  .is-flash {
+    animation: row-flash 1400ms ease-out;
+  }
+
+  .row__chevron {
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .tile {
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .results-fade {
+    animation: fade 220ms ease;
+  }
+
+  .empty-state {
+    animation: rise 320ms var(--ease);
+  }
+
+  .ledger__sort .icon {
+    animation: pop 220ms var(--ease);
+  }
+
+  /* --- Sheet, menu, dan toast --- */
+  .sheet__body > * {
+    animation: rise 360ms var(--ease) backwards;
+  }
+
+  .sheet__body > :nth-child(2) {
+    animation-delay: 40ms;
+  }
+
+  .sheet__body > :nth-child(3) {
+    animation-delay: 80ms;
+  }
+
+  .sheet__body > :nth-child(4) {
+    animation-delay: 120ms;
+  }
+
+  .sheet__body > :nth-child(n + 5) {
+    animation-delay: 150ms;
+  }
+
+  .icon-preview .tile {
+    animation: pop 300ms var(--ease);
+  }
+
+  .icon-grid-wrap,
+  .panel[data-image-panel] {
+    animation: fade 220ms ease;
+  }
+
+  .detail-hero .tile {
+    animation: pop 360ms var(--ease) 80ms backwards;
+  }
+
+  @keyframes shake {
+    20%,
+    60% {
+      transform: translateX(-6px);
+    }
+    40%,
+    80% {
+      transform: translateX(6px);
+    }
+  }
+
+  .form-error:not(:empty) {
+    animation: shake 340ms ease;
+  }
+
+  .form-row {
+    transition: box-shadow var(--dur-fast) ease;
+  }
+
+  .search {
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+
+  .search:focus-within {
+    box-shadow: 0 0 0 3px var(--info-tint);
+  }
+
+  .menu__item {
+    animation: rise 220ms var(--ease) backwards;
+    transition: background var(--dur-fast) ease;
+  }
+
+  .menu__item:nth-child(2) {
+    animation-delay: 30ms;
+  }
+
+  .menu__item:nth-child(3) {
+    animation-delay: 60ms;
+  }
+
+  @keyframes toast-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.96);
+    }
+  }
+
+  .toast {
+    animation: toast-up 320ms var(--ease);
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+
+  .toast.is-leaving {
+    transform: translateY(10px) scale(0.97);
+  }
+
+  /* --- Halaman Scan --- */
+  @keyframes scan-sweep {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(58px);
+    }
+  }
+
+  .scan-visual__beam {
+    animation: scan-sweep 2600ms ease-in-out infinite;
+  }
+
+  /* --- Hover: hanya di perangkat dengan mouse --- */
+  @media (hover: hover) and (pointer: fine) {
+    .finding,
+    .fund-card,
+    .budget-card,
+    .panel,
+    .health,
+    .balance {
+      transition: transform var(--dur) var(--ease), border-color var(--dur-fast) ease, box-shadow var(--dur) ease;
+    }
+
+    .finding:hover,
+    .budget-card:hover,
+    .fund-card:not(.is-reordering):hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-float);
+      transform: translateY(-3px);
+    }
+
+    .panel:hover,
+    .health:hover,
+    .balance:hover {
+      border-color: var(--border-strong);
+    }
+
+    .finding:hover .finding__badge {
+      transform: scale(1.1);
+    }
+
+    .finding__badge {
+      transition: transform var(--dur-fast) var(--ease);
+    }
+
+    .brand:hover .brand__logo {
+      transform: rotate(-6deg) scale(1.06);
+    }
+
+    .btn:hover {
+      filter: brightness(1.12);
+    }
+
+    .btn-circle:hover .icon {
+      transform: rotate(45deg);
+    }
+
+    .row:hover .tile,
+    .ledger tbody tr:hover .tile {
+      transform: scale(1.08);
+    }
+
+    .row:hover .row__chevron {
+      transform: translateX(3px);
+    }
+
+    .rank__item:hover {
+      background: var(--fill);
+      transform: translateX(3px);
+    }
+
+    .rank__item:hover .swatch {
+      transform: scale(1.3);
+    }
+
+    .heat__day:hover {
+      box-shadow: 0 0 0 2px var(--accent);
+      transform: scale(1.1);
+    }
+
+    .range-day:not(:disabled):hover {
+      background: var(--fill-strong);
+      transform: scale(1.08);
+    }
+
+    .range-day.is-start:hover,
+    .range-day.is-end:hover {
+      background: var(--range-end);
+    }
+
+    .period:hover {
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    .chip:hover {
+      border-color: var(--border-strong);
+    }
+
+    .field__control:hover {
+      border-color: var(--border-strong);
+    }
+
+    .field__button:hover .icon {
+      transform: scale(1.14);
+    }
+
+    .choice:hover {
+      background: var(--fill);
+    }
+
+    .icon-option:hover,
+    .color-dot:hover {
+      transform: scale(1.14);
+    }
+
+    .backlink:hover .icon {
+      transform: translateX(-3px);
+    }
+  }
+}

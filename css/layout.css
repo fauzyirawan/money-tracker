@@ -1,0 +1,254 @@
+/* ==========================================================================
+   layout.css: dasar halaman dan kerangka responsif.
+   HP < 760px: tab kapsul di bawah. Lebih lebar: tab kapsul di bawah bilah atas.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Lebar scrollbar diganti padding agar halaman tidak bergeser saat sheet terbuka */
+html.is-locked {
+  overflow: hidden;
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 21px;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+/* Skala tipe */
+.t-large-title {
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.t-title-3 {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+}
+.t-headline {
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: 650;
+  letter-spacing: -0.014em;
+}
+.t-subhead {
+  font-size: 14px;
+  line-height: 20px;
+}
+.t-footnote {
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.006em;
+}
+.t-caption {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-2 {
+  color: var(--text-2);
+}
+.text-income {
+  color: var(--income-text);
+}
+.text-expense {
+  color: var(--expense-text);
+}
+.text-transfer {
+  color: var(--transfer-text);
+}
+.text-warning {
+  color: var(--warning-text);
+}
+.text-accent {
+  color: var(--accent-text);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Kerangka halaman */
+.main {
+  width: 100%;
+  max-width: calc(var(--page-w) + var(--s-8) * 2);
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--s-4) calc(var(--safe-right) + var(--s-4)) calc(var(--safe-bottom) + var(--tab-h) + 104px)
+    calc(var(--safe-left) + var(--s-4));
+}
+
+.view {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-5);
+  width: 100%;
+  min-width: 0;
+}
+
+.view--narrow {
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+.section__title {
+  padding-inline: 2px;
+}
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding-inline: 2px;
+}
+
+/* Dashboard */
+.dash {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  min-width: 0;
+}
+
+.dash__column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  align-content: start;
+  min-width: 0;
+}
+
+@media (min-width: 760px) {
+  .main {
+    padding-inline: calc(var(--safe-left) + var(--s-6)) calc(var(--safe-right) + var(--s-6));
+    padding-bottom: calc(var(--safe-bottom) + var(--s-8));
+  }
+}
+
+@media (min-width: 1000px) {
+  .dash {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .dash__wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1200px) {
+  .main {
+    padding-inline: calc(var(--safe-left) + var(--s-8)) calc(var(--safe-right) + var(--s-8));
+  }
+}
+
+/* Transisi halaman untuk browser tanpa View Transitions API */
+.view.is-entering {
+  animation: view-in var(--dur-fast) ease;
+}
+
+@keyframes view-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 120ms !important;
+  }
+}

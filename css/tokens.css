@@ -1,0 +1,243 @@
+/* ==========================================================================
+   tokens.css: semua nilai desain Money Tracker.
+   Arah desain: dasbor gelap dengan cahaya biru, teal, dan amber yang lembut,
+   kartu transparan bertepi tipis, dan kontrol berbentuk kapsul.
+
+   Mode diatur oleh js/theme.js lewat atribut di <html>:
+   data-theme="dark|light", data-transparency="full|reduced",
+   data-contrast="normal|more", data-glass="full|lite"
+   ========================================================================== */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-latin-wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Latar */
+  --bg: #080b12;
+  --glow-blue: rgb(38 84 190 / 0.72);
+  --glow-teal: rgb(18 104 96 / 0.34);
+  --glow-amber: rgb(130 74 22 / 0.24);
+
+  /* Permukaan */
+  --surface: rgb(255 255 255 / 0.05);
+  --surface-raised: rgb(255 255 255 / 0.07);
+  --surface-solid: #121824;
+  --surface-sheet: #0f141f;
+  --border: rgb(255 255 255 / 0.1);
+  --border-strong: rgb(255 255 255 / 0.18);
+  --fill: rgb(255 255 255 / 0.07);
+  --fill-strong: rgb(255 255 255 / 0.13);
+  --separator: rgb(255 255 255 / 0.09);
+  --scrim: rgb(2 5 12 / 0.66);
+  --chart-gap: #131926;
+
+  /* Teks */
+  --text: #f2f5fb;
+  --text-2: #b0b9c9;
+  --on-bar: #c3cad8;
+  --on-accent: #ffffff;
+
+  /* Warna isian: grafik, ikon, dan indikator */
+  --accent: #60a5fa;
+  --income: #4ade80;
+  --expense: #f87171;
+  --warning: #fbbf24;
+  --transfer: #a5a3ff;
+  --neutral-mark: #5b6577;
+
+  /* Warna teks */
+  --accent-text: #7ab6ff;
+  --income-text: #4ade80;
+  --expense-text: #fb8a8a;
+  --warning-text: #fbbf24;
+  --transfer-text: #b6b4ff;
+
+  /* Tombol utama dan logo */
+  --accent-fill: #2563eb;
+  --brand-gradient: linear-gradient(135deg, #3b82f6, #22d3ee);
+
+  /* Tingkat temuan */
+  --critical-tint: rgb(248 113 113 / 0.1);
+  --warning-tint: rgb(251 191 36 / 0.1);
+  --info-tint: rgb(96 165 250 / 0.1);
+  --range-end: rgb(96 165 250 / 0.3);
+  --positive-tint: rgb(74 222 128 / 0.1);
+
+  /* Heatmap: satu warna, makin pekat makin besar */
+  --heat-0: rgb(255 255 255 / 0.06);
+  --heat-1: #173257;
+  --heat-2: #1d5596;
+  --heat-3: #2f83e0;
+  --heat-4: #93c5fd;
+  --heat-ink-strong: #06101f;
+
+  /* Bilah transparan */
+  --bar-bg: rgb(10 14 24 / 0.72);
+  --bar-blur: 22px;
+  --bar-saturate: 170%;
+
+  /* Radius */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+  --r-sheet: 22px;
+  --r-pill: 999px;
+
+  /* Bayangan */
+  --shadow-float: 0 6px 22px rgb(0 0 0 / 0.5);
+  --shadow-menu: 0 12px 44px rgb(0 0 0 / 0.6);
+
+  /* Spasi */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 32px;
+  --s-8: 40px;
+
+  /* Tipografi */
+  --font: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+
+  /* Gerak */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-fast: 180ms;
+  --dur: 380ms;
+
+  /* Tata letak */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --tap: 44px;
+  --topbar-h: 64px;
+  --tab-h: 62px;
+  --page-w: 1408px;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f1f4fa;
+  --glow-blue: rgb(96 150 255 / 0.3);
+  --glow-teal: rgb(60 200 180 / 0.18);
+  --glow-amber: rgb(250 180 90 / 0.16);
+
+  --surface: rgb(255 255 255 / 0.74);
+  --surface-raised: rgb(255 255 255 / 0.9);
+  --surface-solid: #ffffff;
+  --surface-sheet: #f5f7fb;
+  --border: rgb(20 30 60 / 0.1);
+  --border-strong: rgb(20 30 60 / 0.2);
+  --fill: rgb(20 30 60 / 0.06);
+  --fill-strong: rgb(20 30 60 / 0.12);
+  --separator: rgb(20 30 60 / 0.1);
+  --scrim: rgb(10 16 32 / 0.4);
+  --chart-gap: #ffffff;
+
+  --text: #0d1424;
+  --text-2: #4d576a;
+  --on-bar: #434c5e;
+
+  --accent: #2563eb;
+  --income: #22a355;
+  --expense: #e5484d;
+  --warning: #e8a100;
+  --transfer: #5856d6;
+  --neutral-mark: #c3c9d6;
+
+  --accent-text: #1d55c9;
+  --income-text: #15703a;
+  --expense-text: #b11f23;
+  --warning-text: #935700;
+  --transfer-text: #4a48c4;
+
+  --critical-tint: rgb(229 72 77 / 0.08);
+  --warning-tint: rgb(232 161 0 / 0.1);
+  --info-tint: rgb(37 99 235 / 0.08);
+  --range-end: rgb(37 99 235 / 0.2);
+  --positive-tint: rgb(34 163 85 / 0.09);
+
+  --heat-0: rgb(20 30 60 / 0.06);
+  --heat-1: #cfe3fb;
+  --heat-2: #8fc0f7;
+  --heat-3: #3d8ff0;
+  --heat-4: #0f4fb8;
+  --heat-ink-strong: #ffffff;
+
+  --bar-bg: rgb(246 248 252 / 0.76);
+
+  --shadow-float: 0 6px 20px rgb(30 50 90 / 0.22);
+  --shadow-menu: 0 12px 40px rgb(30 50 90 / 0.24);
+}
+
+/* Kurangi Transparansi: semua permukaan menjadi solid */
+[data-transparency="reduced"] {
+  --surface: var(--surface-solid);
+  --surface-raised: var(--surface-solid);
+  --bar-bg: var(--surface-solid);
+}
+
+/* Tingkatkan Kontras */
+[data-contrast="more"] {
+  --text: #ffffff;
+  --text-2: #dde3ee;
+  --on-bar: #ffffff;
+  --border: rgb(255 255 255 / 0.32);
+  --separator: rgb(255 255 255 / 0.32);
+  --accent-text: #a9d0ff;
+  --income-text: #86efac;
+  --expense-text: #fecaca;
+  --warning-text: #fde68a;
+  --transfer-text: #d3d2ff;
+  --bar-bg: rgb(10 14 24 / 0.95);
+}
+
+[data-theme="light"][data-contrast="more"] {
+  --text: #000000;
+  --text-2: #2c3444;
+  --on-bar: #000000;
+  --border: rgb(0 0 0 / 0.4);
+  --separator: rgb(0 0 0 / 0.4);
+  --accent-text: #123f9c;
+  --income-text: #0b5222;
+  --expense-text: #8f130d;
+  --warning-text: #6b3a00;
+  --transfer-text: #302ea0;
+  --bar-bg: rgb(246 248 252 / 0.96);
+}
+
+/* Perangkat lemah: blur diturunkan agar scroll tetap lancar */
+[data-glass="lite"] {
+  --bar-blur: 10px;
+  --bar-saturate: 130%;
+}
+
+/* Kurangi Gerakan: semua transisi memakai token ini, jadi cukup diatur di sini */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ease: ease;
+    --dur-fast: 120ms;
+    --dur: 120ms;
+  }
+}
+
+/* Browser tanpa backdrop-filter: bilah dibuat hampir solid */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --bar-bg: rgb(10 14 24 / 0.96);
+  }
+
+  [data-theme="light"] {
+    --bar-bg: rgb(246 248 252 / 0.96);
+  }
+}

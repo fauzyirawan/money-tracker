@@ -1,0 +1,31 @@
+/* ==========================================================================
+   materials.css: latar bercahaya dan bilah transparan.
+   ========================================================================== */
+
+/* Elemen tetap, bukan background-attachment, karena iOS tidak mendukungnya */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(74% 70% at 4% -4%, var(--glow-blue), transparent 74%),
+    radial-gradient(46% 62% at 104% 58%, var(--glow-teal), transparent 72%),
+    radial-gradient(52% 42% at 54% 108%, var(--glow-amber), transparent 72%),
+    var(--bg);
+}
+
+[data-transparency="reduced"] .backdrop {
+  background: var(--bg);
+}
+
+.material {
+  background: var(--bar-bg);
+  -webkit-backdrop-filter: blur(var(--bar-blur)) saturate(var(--bar-saturate));
+  backdrop-filter: blur(var(--bar-blur)) saturate(var(--bar-saturate));
+}
+
+[data-transparency="reduced"] .material {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
