@@ -159,7 +159,15 @@ export function renderLogin(gate, { onSuccess, onInstallHelp }) {
       swap();
       return;
     }
-    frame.addEventListener("load", () => window.setTimeout(swap, GOOGLE_SWAP_DELAY_MS), { once: true });
+    /* Setelah bingkai dimuat, Google masih menyimpan tombol sementaranya sebentar. Tombol
+       baru baru ditampilkan setelah hanya bingkainya yang tersisa. */
+    const settled = () => [...(frame.parentElement?.children ?? [])].every((child) => child === frame || child.getBoundingClientRect().height === 0);
+    const waitSettled = () => {
+      if (swapped || !next.isConnected) return;
+      if (settled()) window.setTimeout(swap, GOOGLE_SWAP_DELAY_MS);
+      else window.setTimeout(waitSettled, 50);
+    };
+    frame.addEventListener("load", waitSettled, { once: true });
     window.setTimeout(swap, GOOGLE_SWAP_TIMEOUT_MS);
   };
 

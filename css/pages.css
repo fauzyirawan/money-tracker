@@ -47,10 +47,14 @@ body.is-gated .fab {
   height: 32px;
 }
 
+/* Tingginya dikunci. Saat menggambar, Google sempat menumpuk tombol sementara di atas
+   bingkai tombol (tinggi 80px). Tanpa kunci, kartu ikut memanjang sesaat dan kapsul
+   bahasa di bawahnya melompat, seperti halaman dimuat ulang. */
 .gate__google {
   display: grid;
-  place-items: center;
-  min-height: 44px;
+  place-items: start center;
+  height: 44px;
+  overflow: hidden;
   margin-top: var(--s-3);
   color: var(--text-2);
   font-size: 13px;
@@ -60,6 +64,10 @@ body.is-gated .fab {
    terlihat sampai siap, supaya pergantian bahasa tidak membuat tombol kosong. */
 .gate__google > * {
   grid-area: 1 / 1;
+}
+
+.gate__google-status {
+  align-self: center;
 }
 
 .gate__google-status[hidden] {
