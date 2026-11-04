@@ -5,7 +5,7 @@
    - Permintaan ke backend dan login Google tidak pernah disimpan di cache.
    Naikkan VERSION setiap kali file app diubah, supaya perangkat mengambil versi baru. */
 
-const VERSION = "1.0.3";
+const VERSION = "1.0.4";
 const CACHE = `money-tracker-${VERSION}`;
 
 const SHELL = [
@@ -83,12 +83,19 @@ self.addEventListener("message", (event) => {
   if (event.data === "skip-waiting") self.skipWaiting();
 });
 
+/* GitHub Pages memberi label "boleh dipakai 10 menit" pada setiap file. Untuk halaman
+   utama dan config.js, label itu membuat browser memakai salinan lama dari cache atau
+   memorinya, sehingga config.js yang baru diisi baru terbaca 10 menit kemudian.
+   Karena itu file diambil tanpa cache (no-store), lalu labelnya diganti menjadi
+   "jangan disimpan" sebelum diberikan ke halaman. */
 async function networkFirst(request) {
   const cache = await caches.open(CACHE);
   try {
-    const response = await fetch(request);
+    const response = await fetch(new Request(request.url, { cache: "no-store", credentials: "same-origin" }));
     if (response.ok) cache.put(request, response.clone());
-    return response;
+    const headers = new Headers(response.headers);
+    headers.set("Cache-Control", "no-store");
+    return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
   } catch {
     return (await cache.match(request)) ?? (await cache.match("index.html"));
   }

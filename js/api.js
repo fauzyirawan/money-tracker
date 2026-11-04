@@ -26,6 +26,16 @@ export function isDemoMode() {
   return !apiUrl();
 }
 
+/* Masalah isi config.js yang bisa dikenali, supaya tidak diam-diam jatuh ke mode demo.
+   "unreadable": file tidak terbaca sama sekali, biasanya karena tanda kutip atau koma hilang.
+   "bad_url": apiUrl diisi, tapi bukan URL Web App Apps Script yang berakhiran /exec. */
+export function configProblem() {
+  if (!window.MT_CONFIG) return "unreadable";
+  const url = apiUrl();
+  if (url && !/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(url)) return "bad_url";
+  return "";
+}
+
 export function setSessionToken(token) {
   sessionToken = token;
 }

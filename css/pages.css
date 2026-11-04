@@ -1226,3 +1226,25 @@ body.is-gated .fab {
     font-size: 13px;
   }
 }
+
+/* Kartu temuan di layar sangat sempit: grafik kecil mengecil supaya angka panjang tetap utuh. */
+.finding {
+  container-type: inline-size;
+}
+
+@container (max-width: 300px) {
+  .finding__figure {
+    grid-template-columns: minmax(0, 1fr) 72px;
+    gap: var(--s-2);
+  }
+
+  .finding .spark {
+    width: 72px;
+  }
+}
+
+/* Tombol Google ada di dalam iframe bertema terang. Kalau tema iframe berbeda dengan
+   halaman yang gelap, browser memberi latar putih di sekelilingnya. */
+.gate__google iframe {
+  color-scheme: light;
+}

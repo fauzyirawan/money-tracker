@@ -2,7 +2,7 @@
    Urutan: muat salinan di perangkat -> login (kalau perlu) -> PIN (kalau ada) -> app.
    Juga mengatur navigasi, status sinkron, pintasan keyboard, dan pembaruan versi. */
 
-import { isDemoMode, onSessionRejected, setApiLanguage } from "./api.js";
+import { configProblem, isDemoMode, onSessionRejected, setApiLanguage } from "./api.js";
 import { getLanguage, getTimeZone, initI18n, localizedName, onLanguageChange, setLanguage, setTimeZone, t, tError } from "./i18n.js";
 import { categoryOrFallback, clearLocalData, getSettings, loadStore, onStoreChange } from "./store.js";
 import { clearQueue, loadQueue, onSyncError, onSyncStatus, startSync, stopSync, syncNow, syncStatus } from "./offline.js";
@@ -552,6 +552,8 @@ async function start() {
   renderChrome();
   registerServiceWorker();
   watchLock(gate(), { onUnlock: showApp, onForgot: () => logout() });
+  const problem = configProblem();
+  if (problem) toast(t(`app.config_${problem}`), { duration: 15000 });
 
   const session = getSession();
   if (!isDemoMode() && !session) {

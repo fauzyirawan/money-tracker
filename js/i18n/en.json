@@ -284,6 +284,8 @@
   "settings.reset_done": "Sample data restored",
   "app.update_ready": "A new version of Money Tracker is ready",
   "app.update_reload": "Reload",
+  "app.config_unreadable": "config.js could not be read, so the app is running in demo mode. Check the quotes, colons, and commas in config.js.",
+  "app.config_bad_url": "apiUrl in config.js is not an Apps Script Web App URL. It must start with https://script.google.com/macros/s/ and end with /exec.",
   "nav.reports": "Reports",
   "common.loading": "Loading...",
   "common.increase": "Increase",

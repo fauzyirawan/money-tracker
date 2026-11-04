@@ -276,6 +276,8 @@
   "settings.reset_done": "Data contoh dikembalikan",
   "app.update_ready": "Versi baru Money Tracker tersedia",
   "app.update_reload": "Muat ulang",
+  "app.config_unreadable": "config.js tidak bisa dibaca, jadi app berjalan dalam mode demo. Periksa tanda kutip, titik dua, dan koma di config.js.",
+  "app.config_bad_url": "apiUrl di config.js bukan URL Web App Apps Script. Isinya harus diawali https://script.google.com/macros/s/ dan berakhiran /exec.",
   "nav.reports": "Laporan",
   "common.loading": "Memuat...",
   "common.increase": "Tambah",

@@ -218,7 +218,7 @@ document.addEventListener("keydown", (event) => {
 
 const TOAST_DURATION = 5000;
 
-export function toast(message, { actionLabel, onAction } = {}) {
+export function toast(message, { actionLabel, onAction, duration = TOAST_DURATION } = {}) {
   const container = document.querySelector("[data-toasts]");
   const element = document.createElement("div");
   element.className = "toast";
@@ -247,7 +247,7 @@ export function toast(message, { actionLabel, onAction } = {}) {
   }
 
   container.append(element);
-  window.setTimeout(dismiss, TOAST_DURATION);
+  window.setTimeout(dismiss, duration);
 }
 
 /* --- Segmented control --- */
