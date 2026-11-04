@@ -130,6 +130,9 @@ export function renderLogin(gate, { onSuccess, onInstallHelp }) {
           callback: (response) => finish("auth.login", { idToken: response.credential }),
           ux_mode: "popup",
           itp_support: true,
+          /* Dikunci terang. Bawaannya mengikuti mode gelap sistem, dan kalau berbeda dengan
+             bingkai tombol, browser memberi latar putih di sekeliling tombol. */
+          color_scheme: "light",
         });
         window.google.accounts.id.renderButton(holder, {
           theme: document.documentElement.dataset.theme === "dark" ? "filled_black" : "outline",

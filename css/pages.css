@@ -1244,7 +1244,9 @@ body.is-gated .fab {
 }
 
 /* Tombol Google ada di dalam iframe bertema terang. Kalau tema iframe berbeda dengan
-   halaman yang gelap, browser memberi latar putih di sekelilingnya. */
+   halaman yang gelap, browser memberi latar putih di sekelilingnya. !important dipakai
+   karena tombol versi "Sign in as ..." memasang gayanya sendiri langsung di iframe. */
+.gate__google,
 .gate__google iframe {
-  color-scheme: light;
+  color-scheme: light !important;
 }

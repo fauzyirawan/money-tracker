@@ -5,7 +5,7 @@
    - Permintaan ke backend dan login Google tidak pernah disimpan di cache.
    Naikkan VERSION setiap kali file app diubah, supaya perangkat mengambil versi baru. */
 
-const VERSION = "1.0.4";
+const VERSION = "1.0.5";
 const CACHE = `money-tracker-${VERSION}`;
 
 const SHELL = [
