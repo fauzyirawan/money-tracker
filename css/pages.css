@@ -56,6 +56,21 @@ body.is-gated .fab {
   font-size: 13px;
 }
 
+/* Tombol lama dan tombol bahasa baru menempati tempat yang sama. Tombol baru tidak
+   terlihat sampai siap, supaya pergantian bahasa tidak membuat tombol kosong. */
+.gate__google > * {
+  grid-area: 1 / 1;
+}
+
+.gate__google-status[hidden] {
+  display: none;
+}
+
+.gate__google-button:not(.is-ready) {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .gate__pairing {
   width: 100%;
   text-align: left;

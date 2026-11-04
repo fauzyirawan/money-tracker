@@ -77,82 +77,132 @@ function gateShell(content) {
     </div>`;
 }
 
+/* Saat bahasa diganti, kartu masuk tidak dibuat ulang: teks diganti di tempat lewat
+   data-i18n, dan tombol Google versi bahasa baru disiapkan di belakang tombol lama lalu
+   ditukar setelah siap. Dengan begitu kapsul bahasa tetap bergeser mulus dan tombol
+   Google tidak sempat kosong, terutama di HP yang koneksinya lebih lambat. */
+const GOOGLE_SWAP_DELAY_MS = 150;
+const GOOGLE_SWAP_TIMEOUT_MS = 2500;
+
 export function renderLogin(gate, { onSuccess, onInstallHelp }) {
-  const render = () => {
-    gate.innerHTML = gateShell(`
-      <p class="t-subhead text-2">${escapeHtml(t("auth.subtitle"))}</p>
-      <div class="gate__google" data-google>${escapeHtml(t("auth.loading_google"))}</div>
-      <p class="form-error" role="alert" data-login-error></p>
-      <details class="gate__pairing">
-        <summary>${escapeHtml(t("auth.have_code"))}</summary>
-        <p class="t-footnote text-2">${escapeHtml(t("auth.code_help"))}</p>
-        <form class="gate__code" data-code-form>
-          <input class="field__control" name="code" maxlength="6" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" placeholder="ABC123" aria-label="${escapeHtml(t("auth.code_label"))}" />
-          <button type="submit" class="btn btn--primary">${escapeHtml(t("auth.code_submit"))}</button>
-        </form>
-      </details>
-      <div class="gate__footer">
-        ${segmented({ name: "login-language", label: t("settings.language"), value: getLanguage(), options: [{ value: "id", label: "Indonesia" }, { value: "en", label: "English" }] })}
-        <button type="button" class="btn-plain" data-install-help>${escapeHtml(t("install.how"))}</button>
-      </div>`);
+  gate.innerHTML = gateShell(`
+    <p class="t-subhead text-2" data-i18n="auth.subtitle">${escapeHtml(t("auth.subtitle"))}</p>
+    <div class="gate__google" data-google>
+      <span class="gate__google-status" data-google-status>${escapeHtml(t("auth.loading_google"))}</span>
+    </div>
+    <p class="form-error" role="alert" data-login-error></p>
+    <details class="gate__pairing">
+      <summary data-i18n="auth.have_code">${escapeHtml(t("auth.have_code"))}</summary>
+      <p class="t-footnote text-2" data-i18n="auth.code_help">${escapeHtml(t("auth.code_help"))}</p>
+      <form class="gate__code" data-code-form>
+        <input class="field__control" name="code" maxlength="6" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" placeholder="ABC123" aria-label="${escapeHtml(t("auth.code_label"))}" data-i18n-aria-label="auth.code_label" />
+        <button type="submit" class="btn btn--primary" data-i18n="auth.code_submit">${escapeHtml(t("auth.code_submit"))}</button>
+      </form>
+    </details>
+    <div class="gate__footer">
+      ${segmented({ name: "login-language", label: t("settings.language"), value: getLanguage(), options: [{ value: "id", label: "Indonesia" }, { value: "en", label: "English" }] })}
+      <button type="button" class="btn-plain" data-install-help data-i18n="install.how">${escapeHtml(t("install.how"))}</button>
+    </div>`);
+  gate.querySelector(".segmented").setAttribute("data-i18n-aria-label", "settings.language");
 
-    const error = gate.querySelector("[data-login-error]");
-    const showError = (code) => {
-      error.textContent = tError(code);
-    };
-    const finish = async (action, data) => {
-      error.textContent = "";
-      try {
-        const { data: session } = await api(action, data);
-        saveSession(session);
-        onSuccess(session);
-      } catch (failure) {
-        showError(failure instanceof ApiError ? failure.code : "INTERNAL_ERROR");
-      }
-    };
+  const holder = gate.querySelector("[data-google]");
+  const status = gate.querySelector("[data-google-status]");
+  const error = gate.querySelector("[data-login-error]");
+  let errorCode = "";
+  let statusText = () => t("auth.loading_google");
+  let googleReady = false;
 
-    bindSegmented(gate, "login-language", (language) => setLanguage(language).then(render, render));
-    gate.querySelector("[data-install-help]").addEventListener("click", onInstallHelp);
-    gate.querySelector("[data-code-form]").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const code = event.target.elements.code.value.trim().toUpperCase();
-      if (code.length === 6) finish("auth.redeemPairingCode", { code });
-    });
-
-    const clientId = window.MT_CONFIG?.googleClientId;
-    loadGoogleScript()
-      .then(() => {
-        const holder = gate.querySelector("[data-google]");
-        if (!holder) return;
-        holder.textContent = "";
-        window.google.accounts.id.initialize({
-          client_id: clientId,
-          callback: (response) => finish("auth.login", { idToken: response.credential }),
-          ux_mode: "popup",
-          itp_support: true,
-          /* Dikunci terang. Bawaannya mengikuti mode gelap sistem, dan kalau berbeda dengan
-             bingkai tombol, browser memberi latar putih di sekeliling tombol. */
-          color_scheme: "light",
-        });
-        window.google.accounts.id.renderButton(holder, {
-          theme: document.documentElement.dataset.theme === "dark" ? "filled_black" : "outline",
-          size: "large",
-          shape: "pill",
-          text: "signin_with",
-          width: 280,
-          locale: getLanguage(),
-        });
-      })
-      .catch(() => {
-        /* Tombol Google gagal dimuat (offline atau diblokir): arahkan ke kode pasangan. */
-        const holder = gate.querySelector("[data-google]");
-        if (!holder) return;
-        holder.textContent = navigator.onLine ? t("auth.google_failed") : tError("OFFLINE");
-        gate.querySelector(".gate__pairing").open = true;
-      });
+  const showError = (code) => {
+    errorCode = code;
+    error.textContent = code ? tError(code) : "";
   };
+  const showStatus = (text) => {
+    statusText = text;
+    status.textContent = text ? text() : "";
+    status.hidden = !text;
+  };
+  const finish = async (action, data) => {
+    showError("");
+    try {
+      const { data: session } = await api(action, data);
+      saveSession(session);
+      onSuccess(session);
+    } catch (failure) {
+      showError(failure instanceof ApiError ? failure.code : "INTERNAL_ERROR");
+    }
+  };
+
+  /* Tombol baru dipasang di atas tombol lama dalam keadaan tak terlihat, lalu ditukar
+     setelah bingkainya selesai dimuat. Tombol pertama langsung ditampilkan. */
+  const renderGoogleButton = () => {
+    const next = document.createElement("div");
+    next.className = "gate__google-button";
+    holder.append(next);
+    window.google.accounts.id.renderButton(next, {
+      theme: document.documentElement.dataset.theme === "dark" ? "filled_black" : "outline",
+      size: "large",
+      shape: "pill",
+      text: "signin_with",
+      width: 280,
+      locale: getLanguage(),
+    });
+    const previous = [...holder.querySelectorAll(".gate__google-button")].filter((element) => element !== next);
+    let swapped = false;
+    const swap = () => {
+      if (swapped || !next.isConnected) return;
+      swapped = true;
+      previous.forEach((element) => element.remove());
+      next.classList.add("is-ready");
+    };
+    const frame = next.querySelector("iframe");
+    if (!previous.length || !frame) {
+      swap();
+      return;
+    }
+    frame.addEventListener("load", () => window.setTimeout(swap, GOOGLE_SWAP_DELAY_MS), { once: true });
+    window.setTimeout(swap, GOOGLE_SWAP_TIMEOUT_MS);
+  };
+
+  /* Teks bertanda data-i18n sudah diganti oleh setLanguage. Sisanya diganti di sini. */
+  bindSegmented(gate, "login-language", (language) => {
+    const refresh = () => {
+      showError(errorCode);
+      showStatus(status.hidden ? null : statusText);
+      if (googleReady) renderGoogleButton();
+    };
+    setLanguage(language).then(refresh, refresh);
+  });
+  gate.querySelector("[data-install-help]").addEventListener("click", onInstallHelp);
+  gate.querySelector("[data-code-form]").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const code = event.target.elements.code.value.trim().toUpperCase();
+    if (code.length === 6) finish("auth.redeemPairingCode", { code });
+  });
+
+  const clientId = window.MT_CONFIG?.googleClientId;
+  loadGoogleScript()
+    .then(() => {
+      if (!holder.isConnected) return;
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: (response) => finish("auth.login", { idToken: response.credential }),
+        ux_mode: "popup",
+        itp_support: true,
+        /* Dikunci terang. Bawaannya mengikuti mode gelap sistem, dan kalau berbeda dengan
+           bingkai tombol, browser memberi latar putih di sekeliling tombol. */
+        color_scheme: "light",
+      });
+      showStatus(null);
+      googleReady = true;
+      renderGoogleButton();
+    })
+    .catch(() => {
+      /* Tombol Google gagal dimuat (offline atau diblokir): arahkan ke kode pasangan. */
+      if (!holder.isConnected) return;
+      showStatus(() => (navigator.onLine ? t("auth.google_failed") : tError("OFFLINE")));
+      gate.querySelector(".gate__pairing").open = true;
+    });
   gate.hidden = false;
-  render();
 }
 
 /* --- PIN --- */
