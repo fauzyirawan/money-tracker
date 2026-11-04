@@ -284,16 +284,19 @@ function playEnter() {
   playEnter.timer = window.setTimeout(() => root.classList.remove("is-enter"), ENTER_DURATION);
 }
 
+/* Pindah halaman tidak memakai transisi "foto layar" bawaan browser. Transisi itu memotret
+   seluruh layar termasuk bilah tab, sehingga kapsul tab lama dan baru sempat tampil
+   bersamaan dan ketukan berikutnya bisa tertahan. Yang dianimasikan hanya isi halaman. */
 function show(view) {
-  transition(
-    () => {
-      state.view = view;
-      window.scrollTo(0, 0);
-      playEnter();
-      renderView();
-    },
-    () => select("[data-root] .view")
-  );
+  state.view = view;
+  window.scrollTo(0, 0);
+  playEnter();
+  renderView();
+  const target = select("[data-root] .view");
+  if (!target) return;
+  target.classList.remove("is-entering");
+  void target.offsetWidth;
+  target.classList.add("is-entering");
 }
 
 function go(view) {

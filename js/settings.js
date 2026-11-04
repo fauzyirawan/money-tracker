@@ -9,7 +9,7 @@ import { canPromptInstall, isStandalone, promptInstall, showInstallGuide } from 
 import { glyph, tile } from "./icons.js";
 import { bindSegmented, closeSheet, escapeHtml, segmented, sheetHeader, showSheet, toast } from "./ui.js";
 
-export const APP_VERSION = "1.0.7";
+export const APP_VERSION = "1.0.8";
 
 const TIME_ZONES = ["Asia/Jakarta", "Asia/Makassar", "Asia/Jayapura", "Asia/Singapore", "Asia/Kuala_Lumpur", "Asia/Tokyo", "Australia/Sydney", "Europe/London", "Europe/Amsterdam", "America/New_York", "America/Los_Angeles", "UTC"];
 
